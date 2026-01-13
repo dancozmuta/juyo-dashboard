@@ -1,0 +1,20 @@
+<header class="dashboard-header">
+  <h1 class="dashboard-title">{{ title }}</h1>
+  <div class="dashboard-controls">
+    <app-dropdown
+      *ngIf="locationOptions$ | async as locationOptions"
+      label="Select location"
+      [options]="locationOptions"
+      [value]="selectedHotelId$ | async"
+      (selectionChange)="onLocationChange($event)"
+      class="header-dropdown"
+    ></app-dropdown>
+    <app-dropdown
+      label="Date range"
+      [options]="dateRangeOptions"
+      [value]="selectedDateRange$ | async"
+      (selectionChange)="onDateRangeChange($event)"
+      class="header-dropdown"
+    ></app-dropdown>
+  </div>
+</header>

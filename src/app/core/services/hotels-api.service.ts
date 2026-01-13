@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HotelsResponse } from '../../features/dashboard/models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HotelsApiService {
   private readonly http = inject(HttpClient);
@@ -13,4 +13,3 @@ export class HotelsApiService {
     return this.http.get<HotelsResponse>('/assets/mock/hotels.json');
   }
 }
-
