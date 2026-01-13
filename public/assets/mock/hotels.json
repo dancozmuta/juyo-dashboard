@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "id": 734921,
+      "name": "Riverside Business Hotel"
+    },
+    {
+      "id": 734922,
+      "name": "Grand Maple City Hotel"
+    },
+    {
+      "id": 734923,
+      "name": "Aurora Harbor Suites"
+    }
+  ],
+  "meta": {
+    "total": 3
+  }
+}

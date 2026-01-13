@@ -1,0 +1,16 @@
+{
+  "hotel_id": 734921,
+  "currency": "EUR",
+  "range": {
+    "type": "last_month",
+    "from": "2025-11-01",
+    "to": "2025-11-30"
+  },
+  "as_of": "2025-12-01",
+  "kpis": {
+    "total_revenue": 190900,
+    "average_occupancy": 0.8,
+    "adr": 165,
+    "total_bookings": 1150
+  }
+}
