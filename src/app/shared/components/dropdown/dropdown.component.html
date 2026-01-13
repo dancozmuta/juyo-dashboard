@@ -1,0 +1,48 @@
+<div class="dropdown-container">
+  <label *ngIf="label" class="dropdown-label">{{ label }}</label>
+  <div class="dropdown" [class.open]="isOpen">
+    <button
+      type="button"
+      class="dropdown-trigger"
+      (click)="toggle()"
+      (blur)="onBlur($event)"
+      aria-haspopup="listbox"
+      [attr.aria-expanded]="isOpen"
+    >
+      <span class="dropdown-value">
+        {{ selectedLabel || placeholder }}
+      </span>
+      <svg
+        class="dropdown-chevron"
+        [class.rotated]="isOpen"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4 6L8 10L12 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+    <ul *ngIf="isOpen" class="dropdown-menu" role="listbox">
+      <li
+        *ngFor="let option of options"
+        class="dropdown-option"
+        [class.selected]="selectedValue === option.value"
+        [class.disabled]="option.disabled"
+        (click)="selectOption(option)"
+        role="option"
+        [attr.aria-selected]="selectedValue === option.value"
+        [attr.aria-disabled]="option.disabled"
+      >
+        {{ option.label }}
+      </li>
+    </ul>
+  </div>
+</div>
