@@ -7,6 +7,7 @@ export interface BookingsByChannelItem {
 
 export interface BookingsByChannelResponse {
   hotel_id: number;
+  hotel_name: string;
   range: DateRange;
   data: BookingsByChannelItem[];
 }

@@ -1,0 +1,38 @@
+{
+  "hotel_id": 734923,
+  "hotel_name": "Aurora Harbor Suites",
+  "currency": "EUR",
+  "range": {
+    "from": "2025-11-01",
+    "to": "2025-11-30"
+  },
+  "data": [
+    { "date": "2025-11-01", "revenue": 5400, "occupancy": 72 },
+    { "date": "2025-11-02", "revenue": 5800, "occupancy": 76 },
+    { "date": "2025-11-03", "revenue": 5000, "occupancy": 68 },
+    { "date": "2025-11-05", "revenue": 5600, "occupancy": 74 },
+    { "date": "2025-11-06", "revenue": 5900, "occupancy": 78 },
+    { "date": "2025-11-07", "revenue": 6300, "occupancy": 82 },
+    { "date": "2025-11-08", "revenue": 6700, "occupancy": 86 },
+    { "date": "2025-11-09", "revenue": 7000, "occupancy": 90 },
+    { "date": "2025-11-10", "revenue": 6100, "occupancy": 80 },
+    { "date": "2025-11-12", "revenue": 6000, "occupancy": 79 },
+    { "date": "2025-11-13", "revenue": 6400, "occupancy": 83 },
+    { "date": "2025-11-14", "revenue": 6800, "occupancy": 87 },
+    { "date": "2025-11-15", "revenue": 7200, "occupancy": 91 },
+    { "date": "2025-11-16", "revenue": 7400, "occupancy": 93 },
+    { "date": "2025-11-17", "revenue": 6300, "occupancy": 84 },
+    { "date": "2025-11-19", "revenue": 6200, "occupancy": 83 },
+    { "date": "2025-11-20", "revenue": 6500, "occupancy": 86 },
+    { "date": "2025-11-21", "revenue": 6900, "occupancy": 90 },
+    { "date": "2025-11-22", "revenue": 7300, "occupancy": 94 },
+    { "date": "2025-11-23", "revenue": 7600, "occupancy": 96 },
+    { "date": "2025-11-24", "revenue": 6700, "occupancy": 88 },
+    { "date": "2025-11-25", "revenue": 6400, "occupancy": 85 },
+    { "date": "2025-11-26", "revenue": 6600, "occupancy": 87 },
+    { "date": "2025-11-27", "revenue": 7000, "occupancy": 92 },
+    { "date": "2025-11-28", "revenue": 7400, "occupancy": 95 },
+    { "date": "2025-11-29", "revenue": 7800, "occupancy": 98 },
+    { "date": "2025-11-30", "revenue": 8000, "occupancy": 99 }
+  ]
+}

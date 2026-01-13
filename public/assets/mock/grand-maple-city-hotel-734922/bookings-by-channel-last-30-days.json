@@ -1,0 +1,14 @@
+{
+  "hotel_id": 734922,
+  "hotel_name": "Grand Maple City Hotel",
+  "range": {
+    "from": "2025-11-01",
+    "to": "2025-11-30"
+  },
+  "data": [
+    { "channel": "Direct", "bookings": 450 },
+    { "channel": "Booking.com", "bookings": 340 },
+    { "channel": "Expedia", "bookings": 215 },
+    { "channel": "Airbnb", "bookings": 150 }
+  ]
+}

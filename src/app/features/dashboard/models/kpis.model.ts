@@ -9,6 +9,7 @@ export interface Kpis {
 
 export interface KpisResponse {
   hotel_id: number;
+  hotel_name: string;
   currency: string;
   range: DateRangeWithType;
   as_of: string;

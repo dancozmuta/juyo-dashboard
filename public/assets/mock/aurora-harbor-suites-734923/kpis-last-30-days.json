@@ -1,0 +1,17 @@
+{
+  "hotel_id": 734923,
+  "hotel_name": "Aurora Harbor Suites",
+  "currency": "EUR",
+  "range": {
+    "type": "last_30_days",
+    "from": "2025-11-01",
+    "to": "2025-11-30"
+  },
+  "as_of": "2025-12-01",
+  "kpis": {
+    "total_revenue": 201200,
+    "average_occupancy": 0.85,
+    "adr": 174,
+    "total_bookings": 1156
+  }
+}

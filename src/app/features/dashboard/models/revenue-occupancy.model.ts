@@ -8,6 +8,7 @@ export interface RevenueOccupancyPoint {
 
 export interface RevenueOccupancyResponse {
   hotel_id: number;
+  hotel_name: string;
   currency: string;
   range: DateRange;
   data: RevenueOccupancyPoint[];

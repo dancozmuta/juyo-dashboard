@@ -1,0 +1,17 @@
+{
+  "hotel_id": 734923,
+  "hotel_name": "Aurora Harbor Suites",
+  "currency": "EUR",
+  "range": {
+    "from": "2025-11-25",
+    "to": "2025-12-01"
+  },
+  "data": [
+    { "date": "2025-11-25", "revenue": 6400, "occupancy": 85 },
+    { "date": "2025-11-26", "revenue": 6600, "occupancy": 87 },
+    { "date": "2025-11-27", "revenue": 7000, "occupancy": 92 },
+    { "date": "2025-11-28", "revenue": 7400, "occupancy": 95 },
+    { "date": "2025-11-29", "revenue": 7800, "occupancy": 98 },
+    { "date": "2025-11-30", "revenue": 8000, "occupancy": 99 }
+  ]
+}

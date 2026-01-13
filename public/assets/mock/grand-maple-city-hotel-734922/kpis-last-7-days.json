@@ -1,0 +1,17 @@
+{
+  "hotel_id": 734922,
+  "hotel_name": "Grand Maple City Hotel",
+  "currency": "EUR",
+  "range": {
+    "type": "last_7_days",
+    "from": "2025-11-25",
+    "to": "2025-12-01"
+  },
+  "as_of": "2025-12-01",
+  "kpis": {
+    "total_revenue": 38500,
+    "average_occupancy": 0.82,
+    "adr": 160,
+    "total_bookings": 240
+  }
+}

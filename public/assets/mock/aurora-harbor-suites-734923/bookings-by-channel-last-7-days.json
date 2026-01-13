@@ -1,0 +1,14 @@
+{
+  "hotel_id": 734923,
+  "hotel_name": "Aurora Harbor Suites",
+  "range": {
+    "from": "2025-11-25",
+    "to": "2025-12-01"
+  },
+  "data": [
+    { "channel": "Direct", "bookings": 102 },
+    { "channel": "Booking.com", "bookings": 78 },
+    { "channel": "Expedia", "bookings": 42 },
+    { "channel": "Airbnb", "bookings": 22 }
+  ]
+}

@@ -1,8 +1,9 @@
 {
   "hotel_id": 734921,
+  "hotel_name": "Riverside Business Hotel",
   "currency": "EUR",
   "range": {
-    "type": "last_month",
+    "type": "last_30_days",
     "from": "2025-11-01",
     "to": "2025-11-30"
   },
