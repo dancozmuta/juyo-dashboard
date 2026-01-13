@@ -1,0 +1,21 @@
+.dashboard-header {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.dashboard-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2xl) 0;
+}
+
+.dashboard-controls {
+  display: flex;
+  gap: var(--spacing-2xl);
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.header-dropdown {
+  min-width: 220px;
+}

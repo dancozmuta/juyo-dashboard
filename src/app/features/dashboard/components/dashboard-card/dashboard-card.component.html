@@ -1,0 +1,18 @@
+<div class="dashboard-card">
+  <div class="card-header">
+    <h3 class="card-title">{{ title }}</h3>
+    <div *ngIf="showTabs && tabs.length > 0" class="card-tabs">
+      <button
+        *ngFor="let tab of tabs"
+        class="tab-button"
+        [class.active]="tab === activeTab"
+        type="button"
+      >
+        {{ tab }}
+      </button>
+    </div>
+  </div>
+  <div class="card-content">
+    <ng-content></ng-content>
+  </div>
+</div>
