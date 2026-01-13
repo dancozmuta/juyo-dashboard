@@ -1,3 +1,50 @@
-<div class="dashboard">
-  <h1>Dashboard</h1>
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
+  <main class="dashboard-main">
+    <ng-container *ngIf="vm$ | async as vm">
+      <app-dashboard-header></app-dashboard-header>
+      <div class="dashboard-grid">
+      <app-dashboard-card
+        title="Performance"
+        [showTabs]="true"
+        [tabs]="['Day', 'Week', 'Month']"
+        activeTab="Week"
+      >
+        <div class="chart-placeholder">
+          <!-- Chart will be added here -->
+        </div>
+      </app-dashboard-card>
+
+      <app-dashboard-card title="Details">
+        <app-details-card></app-details-card>
+      </app-dashboard-card>
+
+      <app-dashboard-card
+        title="Watchlists"
+        [showTabs]="true"
+        [tabs]="['Day', 'Week', 'Month']"
+        activeTab="Week"
+      >
+        <div class="chart-placeholder">
+          <!-- Chart will be added here -->
+        </div>
+      </app-dashboard-card>
+
+      <app-dashboard-card title="Total Count">
+        <div class="chart-placeholder">
+          <!-- Chart will be added here -->
+        </div>
+      </app-dashboard-card>
+      </div>
+      
+      <!-- Temporary: Show JSON data for verification -->
+      <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; font-size: 0.75rem; font-family: monospace;">
+        <div><strong>Filters:</strong> {{ vm.filters | json }}</div>
+        <div style="margin-top: 0.5rem;"><strong>KPIs Status:</strong> {{ vm.kpis.status }}</div>
+        <div style="margin-top: 0.5rem;"><strong>Revenue Status:</strong> {{ vm.revenueOccupancy.status }}</div>
+        <div style="margin-top: 0.5rem;"><strong>Bookings Status:</strong> {{ vm.bookingsByChannel.status }}</div>
+        <pre style="margin-top: 1rem; max-height: 300px; overflow: auto;">{{ vm | json }}</pre>
+      </div>
+    </ng-container>
+  </main>
 </div>
