@@ -7,7 +7,9 @@ import { DashboardFiltersService } from './data-access/dashboard-filters.service
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
-import { DetailsCardComponent } from './components/details-card/details-card.component';
+import { PerformanceWidgetComponent } from './widgets/performance-widget/performance-widget.component';
+import { BookingsByChannelWidgetComponent } from './widgets/bookings-by-channel-widget/bookings-by-channel-widget.component';
+import { KpiTilesWidgetComponent } from './widgets/kpi-tiles-widget/kpi-tiles-widget.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +19,9 @@ import { DetailsCardComponent } from './components/details-card/details-card.com
     SidebarComponent,
     DashboardHeaderComponent,
     DashboardCardComponent,
-    DetailsCardComponent
+    PerformanceWidgetComponent,
+    BookingsByChannelWidgetComponent,
+    KpiTilesWidgetComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
