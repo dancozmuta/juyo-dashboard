@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, combineLatest, switchMap, startWith } from 'rxjs';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5percent from '@amcharts/amcharts5/percent';
-import { DashboardDataService } from '../../data-access/dashboard.facade';
+import { DashboardDataService } from '../../data-access/dashboard-data.service';
 import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
 import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
 
@@ -35,14 +35,14 @@ interface PieDataPoint {
 export class BookingsByChannelWidgetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartRoot', { static: false }) chartRoot!: ElementRef<HTMLDivElement>;
 
-  private readonly facade = inject(DashboardDataService);
+  private readonly dashboardData = inject(DashboardDataService);
   private readonly filtersService = inject(DashboardFiltersService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly data$ = this.facade.bookingsByChannel$;
-  readonly filters$ = this.facade.filters$;
+  readonly data$ = this.dashboardData.bookingsByChannel$;
+  readonly filters$ = this.dashboardData.filters$;
 
   getContextString(data: any, currentFilters: any): string {
     if (!data) return '';
@@ -55,7 +55,7 @@ export class BookingsByChannelWidgetComponent implements AfterViewInit, OnDestro
   }
 
   onRetry(): void {
-    // Trigger refresh through filters service, which causes facade to re-fetch
+    // Trigger refresh through filters service, which causes the data service to re-fetch
     this.filtersService.refresh();
   }
 

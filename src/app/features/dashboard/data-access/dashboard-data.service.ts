@@ -29,9 +29,10 @@ export class DashboardDataService {
         }),
         startWith({ status: 'loading' as const }),
         catchError(() =>
-          of({ status: 'error' as const, message: 'Failed to load KPIs. This is a controlled mock error.' } as const).pipe(
-            delay(2000)
-          )
+          of({
+            status: 'error' as const,
+            message: 'Failed to load KPIs. This is a controlled mock error.',
+          } as const).pipe(delay(2000))
         )
       )
     ),
@@ -57,9 +58,10 @@ export class DashboardDataService {
         }),
         startWith({ status: 'loading' as const }),
         catchError(() =>
-          of({ status: 'error' as const, message: 'Failed to load revenue/occupancy. This is a controlled mock error.' } as const).pipe(
-            delay(2000)
-          )
+          of({
+            status: 'error' as const,
+            message: 'Failed to load revenue/occupancy. This is a controlled mock error.',
+          } as const).pipe(delay(2000))
         )
       )
     ),
@@ -81,9 +83,10 @@ export class DashboardDataService {
         }),
         startWith({ status: 'loading' as const }),
         catchError(() =>
-          of({ status: 'error' as const, message: 'Failed to load bookings by channel. This is a controlled mock error.' } as const).pipe(
-            delay(2000)
-          )
+          of({
+            status: 'error' as const,
+            message: 'Failed to load bookings by channel. This is a controlled mock error.',
+          } as const).pipe(delay(2000))
         )
       )
     ),

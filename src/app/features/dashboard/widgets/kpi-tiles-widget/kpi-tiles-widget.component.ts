@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardDataService } from '../../data-access/dashboard.facade';
+import { DashboardDataService } from '../../data-access/dashboard-data.service';
 import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
 import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
 
@@ -12,11 +12,11 @@ import { WidgetStateComponent } from '../../../../shared/components/widget-state
   styleUrl: './kpi-tiles-widget.component.scss',
 })
 export class KpiTilesWidgetComponent {
-  readonly facade = inject(DashboardDataService);
+  readonly dashboardData = inject(DashboardDataService);
   private readonly filtersService = inject(DashboardFiltersService);
 
-  readonly data$ = this.facade.kpis$;
-  readonly filters$ = this.facade.filters$;
+  readonly data$ = this.dashboardData.kpis$;
+  readonly filters$ = this.dashboardData.filters$;
 
   getContextString(data: any, currentFilters: any): string {
     if (!data) return '';
@@ -29,7 +29,7 @@ export class KpiTilesWidgetComponent {
   }
 
   onRetry(): void {
-    // Trigger refresh through filters service, which causes facade to re-fetch
+    // Trigger refresh through filters service, which causes the data service to re-fetch
     this.filtersService.refresh();
   }
 

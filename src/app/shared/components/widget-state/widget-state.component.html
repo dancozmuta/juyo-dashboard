@@ -1,26 +1,26 @@
 @if (state?.status === 'loading') {
-  <div class="widget-state widget-state--loading" role="status" aria-live="polite">
-    <div class="spinner" aria-hidden="true"></div>
-    <p>Loading data...</p>
-  </div>
+<div class="widget-state widget-state--loading" role="status" aria-live="polite">
+  <div class="spinner" aria-hidden="true"></div>
+  <p>Loading data...</p>
+</div>
 } @else if (state?.status === 'error') {
-  <div class="widget-state widget-state--error" role="alert">
-    <app-svg-icon
-      class="error-icon"
-      src="/assets/icons/error-warning-line.svg"
-      [width]="28"
-      [height]="28"
-      color="var(--color-error)"
-      aria-hidden="true"
-    ></app-svg-icon>
-    <p class="error-message">{{ displayMessage }}</p>
-    <button class="retry-button" (click)="onRetry()">Retry</button>
-  </div>
+<div class="widget-state widget-state--error" role="alert">
+  <app-svg-icon
+    class="error-icon"
+    src="/assets/icons/error-warning-line.svg"
+    [width]="28"
+    [height]="28"
+    color="var(--color-error)"
+    aria-hidden="true"
+  ></app-svg-icon>
+  <p class="error-message">{{ displayMessage }}</p>
+  <button class="retry-button" (click)="onRetry()">Retry</button>
+</div>
 } @else if (state?.status === 'empty') {
-  <div class="widget-state widget-state--empty" role="status">
-    <span class="empty-icon" aria-hidden="true">📊</span>
-    <p class="empty-message">{{ displayMessage }}</p>
-  </div>
+<div class="widget-state widget-state--empty" role="status">
+  <span class="empty-icon" aria-hidden="true">📊</span>
+  <p class="empty-message">{{ displayMessage }}</p>
+</div>
 } @else if (state?.status === 'success') {
-  <ng-content></ng-content>
+<ng-content></ng-content>
 }

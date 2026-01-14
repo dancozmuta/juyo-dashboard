@@ -36,7 +36,7 @@ export class DashboardFiltersService {
 
   refresh(): void {
     // Trigger a refresh by incrementing the refresh trigger
-    // This causes filters$ to re-emit, which triggers switchMap in facade to re-fetch
+    // This causes filters$ to re-emit, which triggers DashboardDataService streams to re-fetch
     this.refreshTrigger$.next(this.refreshTrigger$.value + 1);
   }
 

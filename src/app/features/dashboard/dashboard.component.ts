@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { combineLatest, map } from 'rxjs';
 import { HotelsApiService } from '../../core/services/hotels-api.service';
-import { DashboardDataService } from './data-access/dashboard.facade';
+import { DashboardDataService } from './data-access/dashboard-data.service';
 import { DashboardFiltersService } from './data-access/dashboard-filters.service';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
@@ -21,14 +21,14 @@ import { KpiTilesWidgetComponent } from './widgets/kpi-tiles-widget/kpi-tiles-wi
     DashboardCardComponent,
     PerformanceWidgetComponent,
     BookingsByChannelWidgetComponent,
-    KpiTilesWidgetComponent
+    KpiTilesWidgetComponent,
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
   private readonly hotelsApi = inject(HotelsApiService);
-  readonly facade = inject(DashboardDataService);
+  readonly dashboardData = inject(DashboardDataService);
   readonly filtersService = inject(DashboardFiltersService);
 
   readonly hotels$ = this.hotelsApi.getHotels();
@@ -37,16 +37,16 @@ export class DashboardComponent {
   readonly vm$ = combineLatest([
     this.hotels$,
     this.filters$,
-    this.facade.kpis$,
-    this.facade.revenueOccupancy$,
-    this.facade.bookingsByChannel$
+    this.dashboardData.kpis$,
+    this.dashboardData.revenueOccupancy$,
+    this.dashboardData.bookingsByChannel$,
   ]).pipe(
     map(([hotels, filters, kpis, revenueOccupancy, bookingsByChannel]) => ({
       hotels,
       filters,
       kpis,
       revenueOccupancy,
-      bookingsByChannel
+      bookingsByChannel,
     }))
   );
 }

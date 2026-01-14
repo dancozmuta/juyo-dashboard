@@ -10,6 +10,16 @@ import { DashboardFilters } from './dashboard-filters.service';
 export class DashboardApiService {
   private readonly http = inject(HttpClient);
 
+  // Track which (hotel, range) combinations have already produced a simulated error.
+  // This lets us fail once (first load) and then succeed after the user hits "Retry".
+  private readonly kpisErrorKeys = new Set<string>();
+  private readonly revenueErrorKeys = new Set<string>();
+  private readonly bookingsErrorKeys = new Set<string>();
+
+  private getErrorKey(filters: DashboardFilters): string {
+    return `${filters.hotelId}_${filters.dateRange}`;
+  }
+
   // Helper function to get hotel folder name (hotel-name-id)
   private getHotelFolderName(hotelId: number): string {
     const hotelFolderMap: Record<number, string> = {
@@ -21,9 +31,13 @@ export class DashboardApiService {
   }
 
   getKpis(filters: DashboardFilters): Observable<KpisResponse> {
-    // Simulate error for Grand Maple City Hotel on last_30_days
+    // Simulate a one-time error for Grand Maple City Hotel on last_30_days
     if (filters.hotelId === 734922 && filters.dateRange === 'last_30_days') {
+      const key = this.getErrorKey(filters);
+      if (!this.kpisErrorKeys.has(key)) {
+        this.kpisErrorKeys.add(key);
       return throwError(() => new Error('Network error: Failed to fetch KPIs'));
+      }
     }
 
     // Select JSON file based on date range and hotel folder
@@ -41,9 +55,13 @@ export class DashboardApiService {
   }
 
   getRevenueOccupancy(filters: DashboardFilters): Observable<RevenueOccupancyResponse> {
-    // Simulate error for Grand Maple City Hotel on last_30_days
+    // Simulate a one-time error for Grand Maple City Hotel on last_30_days
     if (filters.hotelId === 734922 && filters.dateRange === 'last_30_days') {
+      const key = this.getErrorKey(filters);
+      if (!this.revenueErrorKeys.has(key)) {
+        this.revenueErrorKeys.add(key);
       return throwError(() => new Error('Network error: Failed to fetch revenue/occupancy data'));
+      }
     }
 
     // Select JSON file based on date range and hotel folder
@@ -61,9 +79,13 @@ export class DashboardApiService {
   }
 
   getBookingsByChannel(filters: DashboardFilters): Observable<BookingsByChannelResponse> {
-    // Simulate error for Grand Maple City Hotel on last_30_days
+    // Simulate a one-time error for Grand Maple City Hotel on last_30_days
     if (filters.hotelId === 734922 && filters.dateRange === 'last_30_days') {
+      const key = this.getErrorKey(filters);
+      if (!this.bookingsErrorKeys.has(key)) {
+        this.bookingsErrorKeys.add(key);
       return throwError(() => new Error('Network error: Failed to fetch bookings by channel'));
+      }
     }
 
     // Select JSON file based on date range and hotel folder

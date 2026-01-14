@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, combineLatest, switchMap, startWith } from 'rxjs';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
-import { DashboardDataService } from '../../data-access/dashboard.facade';
+import { DashboardDataService } from '../../data-access/dashboard-data.service';
 import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
 import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
 import { SvgIconComponent } from '../../../../shared/components/svg-icon/svg-icon.component';
@@ -37,16 +37,16 @@ interface ChartDataPoint {
 export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartRoot', { static: false }) chartRoot!: ElementRef<HTMLDivElement>;
 
-  private readonly facade = inject(DashboardDataService);
+  private readonly dashboardData = inject(DashboardDataService);
   private readonly filtersService = inject(DashboardFiltersService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
   private readonly destroyRef = inject(DestroyRef);
 
-  // Direct subscription to facade observable - retry triggers facade refresh
-  readonly data$ = this.facade.revenueOccupancy$;
+  // Direct subscription to data service observable - retry triggers a refresh
+  readonly data$ = this.dashboardData.revenueOccupancy$;
 
-  readonly filters$ = this.facade.filters$;
+  readonly filters$ = this.dashboardData.filters$;
 
   // Calculate missing days for partial data hint
   getMissingDaysCount(data: any): number {
@@ -76,7 +76,7 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
   }
 
   onRetry(): void {
-    // Trigger refresh through filters service, which causes facade to re-fetch
+    // Trigger refresh through filters service, which causes the data service to re-fetch
     this.filtersService.refresh();
   }
 
