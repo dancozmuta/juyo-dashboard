@@ -13,14 +13,17 @@ export interface DashboardFilters {
 })
 export class DashboardFiltersService {
   private readonly hotelIdSubject = new BehaviorSubject<number>(734921);
-  private readonly dateRangeSubject = new BehaviorSubject<DateRangeType>('last_7_days');
+  private readonly dateRangeSubject = new BehaviorSubject<DateRangeType>('last_30_days');
 
   readonly hotelId$ = this.hotelIdSubject.asObservable();
   readonly dateRange$ = this.dateRangeSubject.asObservable();
 
+  private readonly refreshTrigger$ = new BehaviorSubject<number>(0);
+
   readonly filters$: Observable<DashboardFilters> = combineLatest([
     this.hotelId$,
     this.dateRange$,
+    this.refreshTrigger$,
   ]).pipe(map(([hotelId, dateRange]) => ({ hotelId, dateRange })));
 
   setHotelId(hotelId: number): void {
@@ -29,6 +32,12 @@ export class DashboardFiltersService {
 
   setDateRange(dateRange: DateRangeType): void {
     this.dateRangeSubject.next(dateRange);
+  }
+
+  refresh(): void {
+    // Trigger a refresh by incrementing the refresh trigger
+    // This causes filters$ to re-emit, which triggers switchMap in facade to re-fetch
+    this.refreshTrigger$.next(this.refreshTrigger$.value + 1);
   }
 
   getCurrentFilters(): DashboardFilters {

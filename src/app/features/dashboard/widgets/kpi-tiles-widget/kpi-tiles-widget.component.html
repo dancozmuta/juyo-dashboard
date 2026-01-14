@@ -1,42 +1,42 @@
 <ng-container *ngIf="data$ | async as state">
-  @if (state.status === 'loading') {
-    <div class="kpi-loading">
-      <div class="spinner"></div>
-      <p>Loading KPI data...</p>
-    </div>
-  } @else if (state.status === 'error') {
-    <div class="kpi-error">
-      <p>Error: {{ state.error }}</p>
-    </div>
-  } @else if (state.status === 'success') {
-    <div class="kpi-tiles">
-      <div class="kpi-tile">
-        <div class="kpi-label">Total Revenue</div>
-        <div class="kpi-value">
-          {{ formatCurrency(state.data.kpis.total_revenue, state.data.currency) }}
-        </div>
-      </div>
+  <ng-container *ngIf="filters$ | async as filters">
+    <app-widget-state
+      [state]="state"
+      emptyMessage="No KPI data available for the selected range"
+      [context]="state.status === 'success' ? getContextString(state.data, filters) : ''"
+      (retry)="onRetry()"
+    >
+      @if (state.status === 'success') {
+        <div class="kpi-tiles">
+          <div class="kpi-tile">
+            <label class="kpi-label">Total Revenue</label>
+            <strong class="kpi-value">
+              {{ formatCurrency(state.data.kpis.total_revenue, state.data.currency) }}
+            </strong>
+          </div>
 
-      <div class="kpi-tile">
-        <div class="kpi-label">Average Occupancy</div>
-        <div class="kpi-value">
-          {{ formatPercentage(state.data.kpis.average_occupancy) }}
-        </div>
-      </div>
+          <div class="kpi-tile">
+            <label class="kpi-label">Average Occupancy</label>
+            <strong class="kpi-value">
+              {{ formatPercentage(state.data.kpis.average_occupancy) }}
+            </strong>
+          </div>
 
-      <div class="kpi-tile">
-        <div class="kpi-label">ADR</div>
-        <div class="kpi-value">
-          {{ formatCurrency(state.data.kpis.adr, state.data.currency) }}
-        </div>
-      </div>
+          <div class="kpi-tile">
+            <label class="kpi-label">ADR</label>
+            <strong class="kpi-value">
+              {{ formatCurrency(state.data.kpis.adr, state.data.currency) }}
+            </strong>
+          </div>
 
-      <div class="kpi-tile">
-        <div class="kpi-label">Total Bookings</div>
-        <div class="kpi-value">
-          {{ formatNumber(state.data.kpis.total_bookings) }}
+          <div class="kpi-tile">
+            <label class="kpi-label">Total Bookings</label>
+            <strong class="kpi-value">
+              {{ formatNumber(state.data.kpis.total_bookings) }}
+            </strong>
+          </div>
         </div>
-      </div>
-    </div>
-  }
+      }
+    </app-widget-state>
+  </ng-container>
 </ng-container>

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { KpisResponse, RevenueOccupancyResponse, BookingsByChannelResponse } from '../models';
 import { DashboardFilters } from './dashboard-filters.service';
 
@@ -21,6 +21,11 @@ export class DashboardApiService {
   }
 
   getKpis(filters: DashboardFilters): Observable<KpisResponse> {
+    // Simulate error for Grand Maple City Hotel on last_30_days
+    if (filters.hotelId === 734922 && filters.dateRange === 'last_30_days') {
+      return throwError(() => new Error('Network error: Failed to fetch KPIs'));
+    }
+
     // Select JSON file based on date range and hotel folder
     // In a real app, this would be: `/api/dashboard/kpis?hotel_id=${filters.hotelId}&range=${filters.dateRange}`
     const hotelFolder = this.getHotelFolderName(filters.hotelId);
@@ -36,6 +41,11 @@ export class DashboardApiService {
   }
 
   getRevenueOccupancy(filters: DashboardFilters): Observable<RevenueOccupancyResponse> {
+    // Simulate error for Grand Maple City Hotel on last_30_days
+    if (filters.hotelId === 734922 && filters.dateRange === 'last_30_days') {
+      return throwError(() => new Error('Network error: Failed to fetch revenue/occupancy data'));
+    }
+
     // Select JSON file based on date range and hotel folder
     // In a real app, this would be: `/api/dashboard/revenue-occupancy?hotel_id=${filters.hotelId}&range=${filters.dateRange}`
     const hotelFolder = this.getHotelFolderName(filters.hotelId);
@@ -51,6 +61,11 @@ export class DashboardApiService {
   }
 
   getBookingsByChannel(filters: DashboardFilters): Observable<BookingsByChannelResponse> {
+    // Simulate error for Grand Maple City Hotel on last_30_days
+    if (filters.hotelId === 734922 && filters.dateRange === 'last_30_days') {
+      return throwError(() => new Error('Network error: Failed to fetch bookings by channel'));
+    }
+
     // Select JSON file based on date range and hotel folder
     // In a real app, this would be: `/api/dashboard/bookings-by-channel?hotel_id=${filters.hotelId}&range=${filters.dateRange}`
     const hotelFolder = this.getHotelFolderName(filters.hotelId);

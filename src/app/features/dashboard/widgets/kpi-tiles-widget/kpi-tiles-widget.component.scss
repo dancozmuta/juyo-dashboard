@@ -23,16 +23,19 @@
 }
 
 .kpi-label {
+  display: block;
   font-size: var(--font-size-xs);
   color: var(--color-text-tertiary);
   margin-bottom: var(--spacing-xs);
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  cursor: default; // Labels are not clickable in this context
 }
 
 .kpi-value {
-  font-size: var(--font-size-xl);
+  display: block;
+  font-size: var(--font-size-base);
   color: var(--color-text-primary);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;

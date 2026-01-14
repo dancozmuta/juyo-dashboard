@@ -19,7 +19,7 @@ export class SidebarComponent {
   searchQuery = '';
 
   navItems: NavItem[] = [
-    { label: 'Analytics', icon: 'bar-chart', active: true }
+    { label: 'Dashboard', icon: 'bar-chart', active: true }
   ];
 
   onSearchChange(value: string): void {

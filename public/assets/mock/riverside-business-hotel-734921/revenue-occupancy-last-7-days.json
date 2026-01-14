@@ -7,11 +7,12 @@
     "to": "2025-12-01"
   },
   "data": [
-    { "date": "2025-11-25", "revenue": 6200, "occupancy": 81 },
-    { "date": "2025-11-26", "revenue": 6400, "occupancy": 83 },
-    { "date": "2025-11-27", "revenue": 6800, "occupancy": 87 },
-    { "date": "2025-11-28", "revenue": 7200, "occupancy": 91 },
-    { "date": "2025-11-29", "revenue": 7600, "occupancy": 94 },
-    { "date": "2025-11-30", "revenue": 7800, "occupancy": 96 }
+    { "date": "2025-11-25", "revenue": 6650, "occupancy": 84 },
+    { "date": "2025-11-26", "revenue": 5980, "occupancy": 76 },
+    { "date": "2025-11-27", "revenue": 5420, "occupancy": 69 },
+    { "date": "2025-11-28", "revenue": 6250, "occupancy": 79 },
+    { "date": "2025-11-29", "revenue": 7120, "occupancy": 90 },
+    { "date": "2025-11-30", "revenue": 7850, "occupancy": 96 },
+    { "date": "2025-12-01", "revenue": 7280, "occupancy": 92 }
   ]
 }

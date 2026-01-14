@@ -12,20 +12,24 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, combineLatest, switchMap, startWith } from 'rxjs';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import { DashboardFacade } from '../../data-access/dashboard.facade';
+import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
+import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
+import { SvgIconComponent } from '../../../../shared/components/svg-icon/svg-icon.component';
 
 interface ChartDataPoint {
   date: number;
-  revenue: number;
-  occupancy: number;
+  revenue: number | null;
+  occupancy: number | null;
 }
 
 @Component({
   selector: 'app-performance-widget',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, WidgetStateComponent, SvgIconComponent],
   templateUrl: './performance-widget.component.html',
   styleUrl: './performance-widget.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,11 +38,47 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartRoot', { static: false }) chartRoot!: ElementRef<HTMLDivElement>;
 
   private readonly facade = inject(DashboardFacade);
+  private readonly filtersService = inject(DashboardFiltersService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
   private readonly destroyRef = inject(DestroyRef);
 
+  // Direct subscription to facade observable - retry triggers facade refresh
   readonly data$ = this.facade.revenueOccupancy$;
+
+  readonly filters$ = this.facade.filters$;
+
+  // Calculate missing days for partial data hint
+  getMissingDaysCount(data: any): number {
+    if (!data?.range || !data?.data) return 0;
+    try {
+      const from = new Date(data.range.from);
+      const to = new Date(data.range.to);
+      // Calculate expected days (inclusive of both start and end dates)
+      const timeDiff = to.getTime() - from.getTime();
+      const expectedDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
+      const actualDays = data.data.length;
+      return Math.max(0, expectedDays - actualDays);
+    } catch {
+      return 0;
+    }
+  }
+
+  // Get context string for widget state (synchronous)
+  getContextString(data: any, currentFilters: any): string {
+    if (!data) return '';
+    const hotelName = data.hotel_name || '';
+    let rangeText = '';
+    if (currentFilters?.dateRange === 'last_7_days') rangeText = 'Last 7 days';
+    else if (currentFilters?.dateRange === 'last_30_days') rangeText = 'Last 30 days';
+    else rangeText = 'Last month';
+    return hotelName ? `${hotelName} • ${rangeText}` : rangeText;
+  }
+
+  onRetry(): void {
+    // Trigger refresh through filters service, which causes facade to re-fetch
+    this.filtersService.refresh();
+  }
 
   private root: am5.Root | null = null;
   private chart: am5xy.XYChart | null = null;
@@ -118,7 +158,7 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
     this.root.interfaceColors.set('grid', am5.color('#ffffff'));
     this.root.interfaceColors.set('text', am5.color('#ffffff'));
 
-    // Create chart
+    // Create chart with minimal padding for rotated labels
     this.chart = this.root.container.children.push(
       am5xy.XYChart.new(this.root, {
         panX: false,
@@ -126,25 +166,35 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
         wheelX: 'panX',
         wheelY: 'zoomX',
         layout: this.root.verticalLayout,
+        paddingBottom: 35, // Reduced padding to bring logo up
+        paddingLeft: 50, // Space for y-axis labels
       })
     );
+
+    // Let the plot area stretch as much as possible horizontally
+    this.chart.plotContainer.set('marginLeft', 0);
+    this.chart.plotContainer.set('marginRight', 0);
 
     // Create axes
     const xAxis = this.chart.xAxes.push(
       am5xy.DateAxis.new(this.root, {
         baseInterval: { timeUnit: 'day', count: 1 },
         renderer: am5xy.AxisRendererX.new(this.root, {
-          minGridDistance: 30,
+          minGridDistance: 40,
           stroke: am5.color('rgba(255, 255, 255, 0.1)'),
           strokeOpacity: 0.5,
         }),
       })
     );
 
-    // Set x-axis label colors
+    // Set x-axis label colors and rotation
     xAxis.get('renderer').labels.template.setAll({
       fill: am5.color('rgba(255, 255, 255, 0.9)'),
-      fontSize: 12,
+      fontSize: 11,
+      rotation: -45, // Rotate labels 45 degrees counter-clockwise
+      centerY: am5.p100,
+      centerX: 0,
+      paddingTop: 5,
     });
 
     // Remove x-axis grid lines (keep only axis)
@@ -160,6 +210,8 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
           strokeOpacity: 0.5,
         }),
         numberFormat: "#,###'€'",
+        // Tiny headroom so top of columns + bullets are not visually clipped
+        extraMax: 0.01,
       })
     );
 
@@ -184,6 +236,8 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
         numberFormat: "#'%'",
         min: 0,
         max: 100,
+        // Very small headroom so 100% line + bullets stay fully visible
+        extraMax: 0.01,
       })
     );
 
@@ -223,6 +277,9 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
       })
     );
 
+    // Configure to handle null values (creates gaps in chart)
+    this.revenueSeries.set('interpolationDuration', 0);
+
     // Make columns thinner by adjusting column width
     this.revenueSeries.columns.template.setAll({
       width: am5.percent(50), // Make columns 50% of available space instead of default 100%
@@ -258,6 +315,23 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
       })
     );
 
+    // Add bullets (dots) on the line at each data point - matching amCharts example
+    // Slightly nudge bullets downward via locationY so they don't get clipped at the very top
+    this.occupancySeries.bullets.push(function (root, series) {
+      return am5.Bullet.new(root, {
+        locationY: 0.97, // keep bullet just below the exact data point
+        sprite: am5.Circle.new(root, {
+          strokeWidth: 3,
+          stroke: series.get('stroke'),
+          radius: 5,
+          fill: root.interfaceColors.get('background'),
+        }),
+      });
+    });
+
+    // Configure to handle null values (creates breaks in line)
+    this.occupancySeries.set('interpolationDuration', 0);
+
     // Configure the line series to have a filled area underneath with opacity
     this.occupancySeries.strokes.template.setAll({
       strokeWidth: 3,
@@ -268,15 +342,18 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
       fillOpacity: 0.25, // 25% opacity for the filled area
       visible: true,
     });
-    
+
     // Add gradient fill for more appealing look
-    this.occupancySeries.fills.template.set('fillGradient', am5.LinearGradient.new(this.root, {
-      stops: [
-        { color: am5.color('#06b6d4'), opacity: 0.3 },
-        { color: am5.color('#06b6d4'), opacity: 0.1 },
-      ],
-      rotation: 90,
-    }));
+    this.occupancySeries.fills.template.set(
+      'fillGradient',
+      am5.LinearGradient.new(this.root, {
+        stops: [
+          { color: am5.color('#06b6d4'), opacity: 0.3 },
+          { color: am5.color('#06b6d4'), opacity: 0.1 },
+        ],
+        rotation: 90,
+      })
+    );
 
     // Add entrance animation for line (draw from left to right)
     this.occupancySeries.appear(1000, 100);
@@ -305,17 +382,19 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
+    // Map data - missing dates will naturally create gaps
+    // amCharts will skip null/undefined values, creating visual gaps
     const chartData: ChartDataPoint[] = data.map((item) => ({
       date: new Date(item.date).getTime(),
-      revenue: item.revenue,
-      occupancy: item.occupancy, // Already 0-100 in mock data
+      revenue: item.revenue ?? null, // null creates gaps in bar chart
+      occupancy: item.occupancy ?? null, // null creates breaks in line chart
     }));
 
     this.ngZone.runOutsideAngular(() => {
       // Animate data updates
       this.revenueSeries?.data.setAll(chartData);
       this.occupancySeries?.data.setAll(chartData);
-      
+
       // Re-animate if chart already exists
       if (this.chart) {
         this.revenueSeries?.appear();

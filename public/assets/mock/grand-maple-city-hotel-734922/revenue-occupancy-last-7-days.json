@@ -7,11 +7,9 @@
     "to": "2025-12-01"
   },
   "data": [
-    { "date": "2025-11-25", "revenue": 5800, "occupancy": 76 },
-    { "date": "2025-11-26", "revenue": 6000, "occupancy": 78 },
-    { "date": "2025-11-27", "revenue": 6400, "occupancy": 82 },
-    { "date": "2025-11-28", "revenue": 6800, "occupancy": 86 },
-    { "date": "2025-11-29", "revenue": 7200, "occupancy": 90 },
-    { "date": "2025-11-30", "revenue": 7300, "occupancy": 91 }
+    { "date": "2025-11-25", "revenue": 5920, "occupancy": 74 },
+    { "date": "2025-11-27", "revenue": 6380, "occupancy": 81 },
+    { "date": "2025-11-28", "revenue": 6950, "occupancy": 87 },
+    { "date": "2025-11-30", "revenue": 7280, "occupancy": 90 }
   ]
 }

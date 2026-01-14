@@ -1,18 +1,31 @@
 <ng-container *ngIf="data$ | async as state">
-  @if (state.status === 'loading') {
-    <div class="chart-loading">
-      <div class="spinner"></div>
-      <p>Loading chart data...</p>
-    </div>
-  } @else if (state.status === 'error') {
-    <div class="chart-error">
-      <p>Error: {{ state.error }}</p>
-    </div>
-  } @else if (state.status === 'success' && state.data.data.length === 0) {
-    <div class="chart-empty">
-      <p>No data available for the selected range</p>
-    </div>
-  } @else if (state.status === 'success') {
-    <div #chartRoot class="chart-container"></div>
-  }
+  <ng-container *ngIf="filters$ | async as filters">
+    <app-widget-state
+      [state]="state"
+      emptyMessage="No revenue or occupancy data available for the selected range"
+      [context]="state.status === 'success' ? getContextString(state.data, filters) : ''"
+      (retry)="onRetry()"
+    >
+      @if (state.status === 'success') {
+        <div class="chart-wrapper">
+          <div #chartRoot class="chart-container"></div>
+          <div class="partial-data-hint-container">
+            @if (getMissingDaysCount(state.data) > 0) {
+            <p class="partial-data-hint" role="note">
+              <app-svg-icon
+                src="assets/icons/information-2-line.svg"
+                [width]="16"
+                [height]="16"
+                color="var(--color-accent-warning)"
+                class="hint-icon"
+                aria-hidden="true"
+              ></app-svg-icon>
+              <span>Some dates have no data in the selected range ({{ getMissingDaysCount(state.data) }} missing)</span>
+            </p>
+            }
+          </div>
+        </div>
+      }
+    </app-widget-state>
+  </ng-container>
 </ng-container>

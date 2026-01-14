@@ -13,33 +13,34 @@
 }
 
 .dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--spacing-xl);
   margin-top: var(--spacing-2xl);
 }
 
+/* Performance chart: always full width of the container */
 .performance-card {
-  grid-column: 1 / -1;
+  flex: 1 1 100%;
 }
 
-.kpi-card {
-  grid-column: 1;
-}
-
+/* Bottom row: KPIs and Bookings share the available width */
+.kpi-card,
 .bookings-card {
-  grid-column: 2;
+  flex: 1 1 calc(50% - var(--spacing-xl) / 2);
+  min-width: 0; /* allow them to shrink within the row */
 }
 
+/* On narrow screens stack cards vertically full‑width */
 @media (max-width: 768px) {
   .dashboard-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   .performance-card,
   .kpi-card,
   .bookings-card {
-    grid-column: 1;
+    flex: 1 1 100%;
   }
 }
 
@@ -57,7 +58,5 @@
 }
 
 @media (max-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
+  /* Keep flex layout; just ensure some breathing room on medium screens if needed */
 }
