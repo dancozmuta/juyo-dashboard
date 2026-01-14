@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of, shareReplay, startWith, switchMap } from 'rxjs';
+import { Observable, catchError, delay, map, of, shareReplay, startWith, switchMap } from 'rxjs';
 import { DashboardApiService } from './dashboard-api.service';
 import { DashboardFiltersService } from './dashboard-filters.service';
 import { KpisResponse, RevenueOccupancyResponse, BookingsByChannelResponse } from '../models';
 import { Loadable } from './loadable.model';
 
 @Injectable({ providedIn: 'root' })
-export class DashboardFacade {
+export class DashboardDataService {
   private readonly api = inject(DashboardApiService);
   private readonly filters = inject(DashboardFiltersService);
 
@@ -28,7 +28,11 @@ export class DashboardFacade {
             : ({ status: 'empty' as const } as const);
         }),
         startWith({ status: 'loading' as const }),
-        catchError(() => of({ status: 'error' as const, message: 'Failed to load KPIs' } as const))
+        catchError(() =>
+          of({ status: 'error' as const, message: 'Failed to load KPIs. This is a controlled mock error.' } as const).pipe(
+            delay(2000)
+          )
+        )
       )
     ),
     shareReplay({ bufferSize: 1, refCount: true })
@@ -53,7 +57,9 @@ export class DashboardFacade {
         }),
         startWith({ status: 'loading' as const }),
         catchError(() =>
-          of({ status: 'error' as const, message: 'Failed to load revenue/occupancy' } as const)
+          of({ status: 'error' as const, message: 'Failed to load revenue/occupancy. This is a controlled mock error.' } as const).pipe(
+            delay(2000)
+          )
         )
       )
     ),
@@ -75,7 +81,9 @@ export class DashboardFacade {
         }),
         startWith({ status: 'loading' as const }),
         catchError(() =>
-          of({ status: 'error' as const, message: 'Failed to load bookings by channel' } as const)
+          of({ status: 'error' as const, message: 'Failed to load bookings by channel. This is a controlled mock error.' } as const).pipe(
+            delay(2000)
+          )
         )
       )
     ),

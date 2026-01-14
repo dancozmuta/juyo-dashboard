@@ -15,8 +15,7 @@
 .dashboard-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xl);
-  margin-top: var(--spacing-2xl);
+  gap: var(--spacing-sm);
 }
 
 /* Performance chart: always full width of the container */

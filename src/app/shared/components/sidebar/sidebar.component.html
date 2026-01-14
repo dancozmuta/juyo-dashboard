@@ -2,7 +2,7 @@
   <div class="sidebar-header">
     <div class="logo">
       <app-svg-icon
-        src="/assets/icons/juyo_logo.svg"
+        src="/assets/icons/juyo_logo_without_text.svg"
         [height]="20"
         color="currentColor"
         containerClass="logo-image"
@@ -50,23 +50,12 @@
     <ul class="nav-list">
       <li *ngFor="let item of navItems" class="nav-item">
         <a class="nav-link" [class.active]="item.active" href="#" (click)="$event.preventDefault()">
-          <svg
-            *ngIf="item.icon === 'bar-chart'"
+          <app-svg-icon
             class="nav-icon"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3 16H17M5 12V8M9 12V4M13 12V10"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            [src]="item.iconSrc"
+            [height]="20"
+            color="currentColor"
+          ></app-svg-icon>
           <span class="nav-label">{{ item.label }}</span>
         </a>
       </li>

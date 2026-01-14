@@ -32,6 +32,9 @@
   --color-border-focus: rgba(59, 130, 246, 0.5);
   --color-border-placeholder: rgba(255, 255, 255, 0.1);
 
+  // Semantic status colors
+  --color-error: #f97373; // soft, pleasant red for errors
+
   // Typography
   // --------------------------------------------
   --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -87,4 +90,10 @@
   // --------------------------------------------
   --z-index-sidebar: 100;
   --z-index-dropdown: 1000;
+}
+
+@media (max-width: 1078px) {
+  :root {
+    --sidebar-width: 50px;
+  }
 }

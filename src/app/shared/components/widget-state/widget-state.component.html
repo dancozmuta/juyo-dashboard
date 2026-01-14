@@ -5,7 +5,14 @@
   </div>
 } @else if (state?.status === 'error') {
   <div class="widget-state widget-state--error" role="alert">
-    <span class="error-icon" aria-hidden="true">⚠️</span>
+    <app-svg-icon
+      class="error-icon"
+      src="/assets/icons/error-warning-line.svg"
+      [width]="28"
+      [height]="28"
+      color="var(--color-error)"
+      aria-hidden="true"
+    ></app-svg-icon>
     <p class="error-message">{{ displayMessage }}</p>
     <button class="retry-button" (click)="onRetry()">Retry</button>
   </div>

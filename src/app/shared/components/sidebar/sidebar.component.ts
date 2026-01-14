@@ -4,7 +4,7 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 
 export interface NavItem {
   label: string;
-  icon: string;
+  iconSrc: string;
   active?: boolean;
 }
 
@@ -13,13 +13,24 @@ export interface NavItem {
   standalone: true,
   imports: [CommonModule, SvgIconComponent],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
   searchQuery = '';
 
+  // Central, declarative configuration for navigation items.
+  // Each item defines its label, icon source and active state.
   navItems: NavItem[] = [
-    { label: 'Dashboard', icon: 'bar-chart', active: true }
+    {
+      label: 'Dashboard',
+      iconSrc: '/assets/icons/home-4-line.svg',
+      active: false,
+    },
+    {
+      label: 'Analytics',
+      iconSrc: '/assets/icons/line-chart-line.svg',
+      active: true,
+    },
   ];
 
   onSearchChange(value: string): void {

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { combineLatest, map } from 'rxjs';
 import { HotelsApiService } from '../../core/services/hotels-api.service';
-import { DashboardFacade } from './data-access/dashboard.facade';
+import { DashboardDataService } from './data-access/dashboard.facade';
 import { DashboardFiltersService } from './data-access/dashboard-filters.service';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { DashboardHeaderComponent } from './components/dashboard-header/dashboard-header.component';
@@ -28,7 +28,7 @@ import { KpiTilesWidgetComponent } from './widgets/kpi-tiles-widget/kpi-tiles-wi
 })
 export class DashboardComponent {
   private readonly hotelsApi = inject(HotelsApiService);
-  readonly facade = inject(DashboardFacade);
+  readonly facade = inject(DashboardDataService);
   readonly filtersService = inject(DashboardFiltersService);
 
   readonly hotels$ = this.hotelsApi.getHotels();

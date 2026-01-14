@@ -128,3 +128,52 @@
 .nav-label {
   flex: 1;
 }
+
+/* Compact sidebar mode for medium viewports
+ * At widths <= 1078px we collapse the sidebar to an icon‑only rail.
+ * This keeps implementation purely presentational and avoids TS/template changes.
+ */
+@media (max-width: 1078px) {
+  .sidebar {
+    width: 50px;
+    align-items: center;
+  }
+
+  .logo {
+    justify-content: center;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .search-input-wrapper {
+    justify-content: center;
+  }
+
+  .search-icon {
+    position: static;
+  }
+
+  .search-input {
+    display: none;
+  }
+
+  .sidebar-nav {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .nav-link {
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+    width: 36px;
+    height: 36px;
+    margin-inline: auto;
+    border-radius: var(--radius-sm);
+  }
+
+  .nav-label {
+    display: none;
+  }
+}

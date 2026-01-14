@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardFacade } from '../../data-access/dashboard.facade';
+import { DashboardDataService } from '../../data-access/dashboard.facade';
 import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
 import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
 
@@ -12,7 +12,7 @@ import { WidgetStateComponent } from '../../../../shared/components/widget-state
   styleUrl: './kpi-tiles-widget.component.scss',
 })
 export class KpiTilesWidgetComponent {
-  readonly facade = inject(DashboardFacade);
+  readonly facade = inject(DashboardDataService);
   private readonly filtersService = inject(DashboardFiltersService);
 
   readonly data$ = this.facade.kpis$;

@@ -1,16 +1,18 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Loadable } from '../../../features/dashboard/data-access/loadable.model';
+import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 
 @Component({
   selector: 'app-widget-state',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SvgIconComponent],
   templateUrl: './widget-state.component.html',
   styleUrl: './widget-state.component.scss',
 })
 export class WidgetStateComponent {
   @Input() state: Loadable<any> | null = null;
+
   @Input() emptyMessage = 'No data available for the selected range';
   @Input() errorMessage?: string;
   @Input() context?: string; // e.g., "Grand Maple City Hotel • Last 7 days"

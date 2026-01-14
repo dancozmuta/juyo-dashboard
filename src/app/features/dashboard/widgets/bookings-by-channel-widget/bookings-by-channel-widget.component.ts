@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, combineLatest, switchMap, startWith } from 'rxjs';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5percent from '@amcharts/amcharts5/percent';
-import { DashboardFacade } from '../../data-access/dashboard.facade';
+import { DashboardDataService } from '../../data-access/dashboard.facade';
 import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
 import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
 
@@ -35,7 +35,7 @@ interface PieDataPoint {
 export class BookingsByChannelWidgetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartRoot', { static: false }) chartRoot!: ElementRef<HTMLDivElement>;
 
-  private readonly facade = inject(DashboardFacade);
+  private readonly facade = inject(DashboardDataService);
   private readonly filtersService = inject(DashboardFiltersService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
@@ -134,12 +134,13 @@ export class BookingsByChannelWidgetComponent implements AfterViewInit, OnDestro
     // Set root colors for dark theme
     this.root.interfaceColors.set('text', am5.color('#ffffff'));
 
-    // Create pie chart with compact padding so labels sit closer to the chart
+    // Create pie chart with tuned padding so there's less empty space
+    // above the pie but still some room for labels around it.
     this.chart = this.root.container.children.push(
       am5percent.PieChart.new(this.root, {
         layout: this.root.verticalLayout,
-        paddingTop: 16,
-        paddingBottom: 16,
+        paddingTop: 0,
+        paddingBottom: 8,
         paddingLeft: 16,
         paddingRight: 16,
       })
@@ -234,6 +235,17 @@ export class BookingsByChannelWidgetComponent implements AfterViewInit, OnDestro
       fill: am5.color('rgba(255, 255, 255, 0.9)'),
       fontSize: 12,
     });
+
+    // Nudge the amCharts watermark logo upward so it sits closer to
+    // the pie and reduces empty space at the bottom of the card.
+    const anyRoot = this.root as any;
+    if (anyRoot._logo) {
+      anyRoot._logo.setAll({
+        centerY: am5.p100,
+        y: am5.p100,
+        dy: -16,
+      });
+    }
   }
 
   private updateChartData(data: Array<{ channel: string; bookings: number }>): void {

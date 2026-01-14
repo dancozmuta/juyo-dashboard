@@ -7,24 +7,29 @@
       (retry)="onRetry()"
     >
       @if (state.status === 'success') {
-        <div class="chart-wrapper">
-          <div #chartRoot class="chart-container"></div>
-          <div class="partial-data-hint-container">
-            @if (getMissingDaysCount(state.data) > 0) {
-            <p class="partial-data-hint" role="note">
-              <app-svg-icon
-                src="assets/icons/information-2-line.svg"
-                [width]="16"
-                [height]="16"
-                color="var(--color-accent-warning)"
-                class="hint-icon"
-                aria-hidden="true"
-              ></app-svg-icon>
-              <span>Some dates have no data in the selected range ({{ getMissingDaysCount(state.data) }} missing)</span>
-            </p>
-            }
-          </div>
+      <div class="chart-wrapper">
+        <div #chartRoot class="chart-container"></div>
+        <div class="partial-data-hint-container">
+          @if (getMissingDaysCount(state.data) > 0) {
+          <p class="partial-data-hint" role="note">
+            <app-svg-icon
+              src="assets/icons/information-2-line.svg"
+              [width]="16"
+              [height]="16"
+              color="var(--color-accent-warning)"
+              class="hint-icon"
+              aria-hidden="true"
+            ></app-svg-icon>
+            <span>
+              Some dates have no data in the selected range ({{
+                getMissingDaysCount(state.data)
+              }}
+              missing)
+            </span>
+          </p>
+          }
         </div>
+      </div>
       }
     </app-widget-state>
   </ng-container>

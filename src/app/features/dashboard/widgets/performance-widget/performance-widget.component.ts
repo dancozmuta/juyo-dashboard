@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, combineLatest, switchMap, startWith } from 'rxjs';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
-import { DashboardFacade } from '../../data-access/dashboard.facade';
+import { DashboardDataService } from '../../data-access/dashboard.facade';
 import { DashboardFiltersService } from '../../data-access/dashboard-filters.service';
 import { WidgetStateComponent } from '../../../../shared/components/widget-state/widget-state.component';
 import { SvgIconComponent } from '../../../../shared/components/svg-icon/svg-icon.component';
@@ -37,7 +37,7 @@ interface ChartDataPoint {
 export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chartRoot', { static: false }) chartRoot!: ElementRef<HTMLDivElement>;
 
-  private readonly facade = inject(DashboardFacade);
+  private readonly facade = inject(DashboardDataService);
   private readonly filtersService = inject(DashboardFiltersService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ngZone = inject(NgZone);
@@ -158,7 +158,7 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
     this.root.interfaceColors.set('grid', am5.color('#ffffff'));
     this.root.interfaceColors.set('text', am5.color('#ffffff'));
 
-    // Create chart with minimal padding for rotated labels
+    // Create chart with tuned padding for rotated labels and tighter bottom spacing
     this.chart = this.root.container.children.push(
       am5xy.XYChart.new(this.root, {
         panX: false,
@@ -166,7 +166,7 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
         wheelX: 'panX',
         wheelY: 'zoomX',
         layout: this.root.verticalLayout,
-        paddingBottom: 35, // Reduced padding to bring logo up
+        paddingBottom: 20, // keep room for legend but reduce empty bottom space
         paddingLeft: 50, // Space for y-axis labels
       })
     );
@@ -375,6 +375,17 @@ export class PerformanceWidgetComponent implements AfterViewInit, OnDestroy {
 
     // Add cursor
     this.chart.set('cursor', am5xy.XYCursor.new(this.root, {}));
+
+    // Move the amCharts watermark logo slightly up so it sits
+    // closer to the chart/legend and reduces empty space at the bottom.
+    const anyRoot = this.root as any;
+    if (anyRoot._logo) {
+      anyRoot._logo.setAll({
+        centerY: am5.p100,
+        y: am5.p100,
+        dy: -8, // nudge upward without overlapping legend
+      });
+    }
   }
 
   private updateChartData(data: Array<{ date: string; revenue: number; occupancy: number }>): void {

@@ -7,8 +7,15 @@
 
 .chart-container {
   width: 100%;
-  height: 280px;
-  min-height: 280px;
+  height: 260px;
+  min-height: 260px;
+}
+
+/* Fine‑tune amCharts 5 watermark position so it sits
+ * closer to the chart content and reduces dead space
+ * at the bottom of the card, without affecting legend. */
+.chart-container .am5-logo {
+  bottom: 26px !important;
 }
 
 .partial-data-hint-container {
